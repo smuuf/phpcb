@@ -100,7 +100,7 @@
 		<h1><?= $tpl['app_name']; ?> results</h1>
 		<h2>PHP <?= phpversion(); ?></h2>
 
-		<p>Iterations: <?= $tpl['count']; ?>x \ Total time: <?= round($tpl['total_time'], 4); ?> ms</p>
+		<p>Iterations: <?= $tpl['count']; ?>x \ Total time: <?= number_format($tpl['total_time'], 4); ?> ms</p>
 
 		<ul class="results">
 
@@ -113,7 +113,7 @@
 				<h3><?= ++$position; ?>.</h3>
 
 				Result:
-				<span class='result-time'><?= round($resultTime, 4); ?> ms</span> \
+				<span class='result-time'><?= number_format($resultTime, 4); ?> ms</span> \
 				<span class='result-time-single'><?= bcdiv($resultTime, $tpl['count']); ?> ms</span> per single iteration
 
 				<?php
@@ -126,7 +126,7 @@
 				<pre class="code"><?= htmlentities($tpl['source_function']($closure), ENT_HTML5); ?></pre>
 
 				<div class='result-colorbox' style='background-color: <?=$tpl['gradient_function']($score); ?>'>
-					<span class="score">Score: <b><?= round($score, 2); ?> %</b></span> <span class="of-total"><?= round($percentageOfTotal, 2); ?> % of total</span>
+					<span class="score">Score: <b><?= number_format($score, 2); ?> %</b></span> <span class="of-total"><?= number_format($percentageOfTotal, 2); ?> % of total</span>
 				</div>
 
 			</li>
