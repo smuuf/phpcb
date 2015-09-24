@@ -31,12 +31,15 @@ class PhpBenchmark {
 		// Limit the iterations count
 		$count = min(max($count, self::MIN_COUNT), self::MAX_COUNT);
 
+		// Measure call cost for a void closure
+		$voidTime = self::measureVoidCallTime($count);
+
 		// Run each of the benchmark closures
 		foreach ($this->closures as $key => $function){
 
 			$time = microtime(true);
-			for ($i = 1; $i <= $count; $i++) call_user_func($function);
-			$this->results[$key] = microtime(true) - $time;
+			for ($i = 1; $i <= $count; $i++) $function();
+			$this->results[$key] = microtime(true) - $time - $voidTime;
 
 		}
 
@@ -76,6 +79,25 @@ class PhpBenchmark {
 
 	}
 
+	// Helpers
+
+	protected static function measureVoidCallTime($count) {
+
+		// Static cache; do this measurement only
+		// once per request for any given $count.
+		static $cache;
+		if ($cache[$count]) return $cache[$count];
+
+		$voidClosure = function() {};
+
+		$time = microtime(true);
+		for ($i = 1; $i <= $count; $i++) $voidClosure();
+		$time = microtime(true) - $time;
+
+		return $cache[$count] = $time;
+
+	}
+
 	// Template helpers
 
 	private function getSourceCode(\Closure $closure) {
@@ -88,11 +110,14 @@ class PhpBenchmark {
 		$startLine = $reflection->getStartLine();
 		$endLine = $reflection->getEndLine() - 1;
 
-		return implode(PHP_EOL, array_slice($source, $startLine, $endLine - $startLine));
+		return implode(
+			PHP_EOL,
+			array_slice($source, $startLine, $endLine - $startLine)
+		);
 
 	}
 
-	private function getGradientColor($percentage, $brightness = 200, $b = "00"){
+	private function getGradientColor($percentage, $brightness = 200, $b = '00') {
 
 		$green = $brightness * $percentage / 100 ;
 		$red = $brightness * (1 - ($percentage / 100));
