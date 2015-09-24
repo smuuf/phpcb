@@ -38,7 +38,7 @@ class PhpBenchmark {
 		foreach ($this->closures as $key => $function){
 
 			$time = microtime(true);
-			for ($i = 1; $i <= $count; $i++) $function();
+			for ($i = $count; $i--;) $function();
 			$this->results[$key] = microtime(true) - $time - $voidTime;
 
 		}
@@ -91,7 +91,7 @@ class PhpBenchmark {
 		$voidClosure = function() {};
 
 		$time = microtime(true);
-		for ($i = 1; $i <= $count; $i++) $voidClosure();
+		for ($i = $count; $i--;) $voidClosure();
 		$time = microtime(true) - $time;
 
 		return $cache[$count] = $time;
