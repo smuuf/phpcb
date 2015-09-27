@@ -117,16 +117,32 @@
 				<span class='result-time-single'><?= bcdiv($resultTime, $tpl['count']); ?> ms</span> per single iteration
 
 				<?php
+
 					$closure = $tpl['closures'][$index];
-					$percentageOfTotal = $resultTime / $tpl['total_time'] * 100;
-					$score = ($tpl['results'][$index] - $tpl['max_time']) / ($tpl['min_time'] - $tpl['max_time']) * 100;
+
+					// Avoid division by zero in certain cases:
+					// 1) Total time is below measurable threshold
+					// 2) Minimal and maximal of the benchmard time are the same
+					// .. (ie. there's only one test or there are no differences)
+					if ($tpl['total_time'] && $tpl['min_time'] - $tpl['max_time']) {
+
+						$percentageOfTotal = $resultTime / $tpl['total_time'] * 100;
+						$score = ($tpl['results'][$index] - $tpl['max_time']) / ($tpl['min_time'] - $tpl['max_time']) * 100;
+
+					} else {
+
+						$percentageOfTotal = false;
+						$score = false;
+
+					}
+
 				?>
 
 				<p><b>Closure <?= $index + 1 ?></b> \ Code:</p>
 				<pre class="code"><?= htmlentities($tpl['source_function']($closure), ENT_HTML5); ?></pre>
 
-				<div class='result-colorbox' style='background-color: <?=$tpl['gradient_function']($score); ?>'>
-					<span class="score">Score: <b><?= number_format($score, 2); ?> %</b></span> <span class="of-total"><?= number_format($percentageOfTotal, 2); ?> % of total</span>
+				<div class='result-colorbox' style='background-color: <?= $score !== false ? $tpl['gradient_function']($score) : '#888'; ?>'>
+					<span class="score">Score: <b><?= $score !== false ? number_format($score, 2) : 'N/A'; ?> %</b></span> <span class="of-total"><?= $percentageOfTotal !== false ? number_format($percentageOfTotal, 2) : 'N/A'; ?> % of total</span>
 				</div>
 
 			</li>
