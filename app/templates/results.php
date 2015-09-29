@@ -87,11 +87,13 @@
 				height: 100%;
 			}
 
-			.result-colorbox span.of-total {
+			.result-colorbox span.score2 {
 				padding: 5px;
 				height: 100%;
 				color: #fff;
 				opacity: 0.75;
+				background: rgba(0,0,0,0.25);
+				text-shadow: 0px 1px 0px #000;
 			}
 
 		</style>
@@ -126,12 +128,12 @@
 					// .. (ie. there's only one test or there are no differences)
 					if ($tpl['total_time'] && $tpl['min_time'] - $tpl['max_time']) {
 
-						$percentageOfTotal = $resultTime / $tpl['total_time'] * 100;
-						$score = ($tpl['results'][$index] - $tpl['max_time']) / ($tpl['min_time'] - $tpl['max_time']) * 100;
+						$score = $tpl['min_time'] / $tpl['results'][$index] * 100;
+						$score2 = $resultTime / $tpl['min_time'];
 
 					} else {
 
-						$percentageOfTotal = false;
+						$score2 = false;
 						$score = false;
 
 					}
@@ -142,7 +144,10 @@
 				<pre class="code"><?= htmlentities($tpl['source_function']($closure), ENT_HTML5); ?></pre>
 
 				<div class='result-colorbox' style='background-color: <?= $score !== false ? $tpl['gradient_function']($score) : '#888'; ?>'>
-					<span class="score">Score: <b><?= $score !== false ? number_format($score, 2) : 'N/A'; ?> %</b></span> <span class="of-total"><?= $percentageOfTotal !== false ? number_format($percentageOfTotal, 2) : 'N/A'; ?> % of total</span>
+					<span class="score">Score: <b><?= $score !== false ? number_format($score, 2) : 'N/A'; ?> %</b></span>
+					<?php if ($score2 != 1): ?>
+						<span class="score2"><?= $score2 !== false ? number_format($score2, 2) : 'N/A'; ?> &times; slower</span>
+					<?php endif; ?>
 				</div>
 
 			</li>
