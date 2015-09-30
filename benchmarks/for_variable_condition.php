@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . "/../app/PhpBenchmark.php";
+require __DIR__ . "/../app/Loader.php";
 $bench = new \Smuuf\Phpcb\PhpBenchmark;
 
 const COUNT = 100;

@@ -23,7 +23,7 @@
 			h2 {
 				display: inline-block;
 				font-size: 18pt;
-				margin: 10px 0;
+				margin: 0;
 				color: #000;
 			}
 
@@ -37,9 +37,18 @@
 				background: #333;
 			}
 
-			p {
+			p, header {
 				margin: 10px 0;
 				padding: 0;
+			}
+
+			.engine {
+				display: inline-block;
+				font-size: 10pt;
+				padding: 5px;
+				margin: 0;
+				color: #333;
+				background: #eee;
 			}
 
 			.results{
@@ -99,9 +108,12 @@
 		</style>
 	</head>
 	<body>
-		<h1><?= $tpl['app_name']; ?> results</h1>
-		<h2>PHP <?= phpversion(); ?></h2>
+		<header>
+			<h1><?= $tpl['app_name']; ?> results</h1>
+			<h2>PHP <?= phpversion(); ?></h2>
+		</header>
 
+		<p><span class="engine">Engine used: <b><?= $tpl['engine_used']; ?></b></span></p>
 		<p>Iterations: <?= $tpl['count']; ?>x \ Total time: <?= number_format($tpl['total_time'], 4); ?> ms</p>
 
 		<ul class="results">
@@ -128,7 +140,7 @@
 					// .. (ie. there's only one test or there are no differences)
 					if ($tpl['total_time'] && $tpl['min_time'] - $tpl['max_time']) {
 
-						$score = $tpl['min_time'] / $tpl['results'][$index] * 100;
+						$score = $tpl['min_time'] / $resultTime * 100;
 						$score2 = $resultTime / $tpl['min_time'];
 
 					} else {
