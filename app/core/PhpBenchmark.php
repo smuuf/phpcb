@@ -5,6 +5,7 @@ namespace Smuuf\Phpcb;
 class PhpBenchmark {
 
 	const APP_NAME = 'phpcb';
+	const GITHUB_LINK = 'http://github.com/smuuf/phpcb/';
 
 	const DEFAULT_ENGINE = '\\Smuuf\\Phpcb\\ChaoticEngine';
 
@@ -65,6 +66,8 @@ class PhpBenchmark {
 
 		// Set up template variables
 		$this->template['app_name'] = self::APP_NAME;
+		$this->template['github_link'] = self::GITHUB_LINK;
+		$this->template['css_file'] = self::pathToUrl(__DIR__ . "/../templates/css/main.css");
 		$this->template['engine_used'] = $this->engine->getEngineName();
 		$this->template['results'] = $this->results;
 		$this->template['total_time'] = array_sum($this->results);
@@ -80,6 +83,20 @@ class PhpBenchmark {
 		require __DIR__ . "/../templates/results.php";
 
 		ob_end_flush();
+
+	}
+
+	// Helpers
+
+	public static function pathToUrl($path, $protocol = 'http://') {
+
+		// Correct the slash type
+		$path = str_replace('\\', '/', $path);
+
+		// Remove document root directory from the path
+		$urlPath = str_replace(rtrim($_SERVER['DOCUMENT_ROOT'], '/'), null, $path);
+
+		return $protocol . $_SERVER['HTTP_HOST'] . $urlPath;
 
 	}
 
