@@ -42,23 +42,4 @@ class ChaoticEngine implements IEngine {
 
 	}
 
-	// Helpers
-
-	protected static function measureVoidCallTime($count) {
-
-		// Static cache; do this measurement only
-		// once per request for any given $count.
-		static $cache;
-		if ($cache[$count]) return $cache[$count];
-
-		$voidClosure = function() {};
-
-		$time = microtime(true);
-		for ($i = $count; $i--;) $voidClosure();
-		$time = microtime(true) - $time;
-
-		return $cache[$count] = $time;
-
-	}
-
 }
