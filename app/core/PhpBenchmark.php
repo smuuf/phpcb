@@ -5,6 +5,9 @@ namespace Smuuf\Phpcb;
 class PhpBenchmark {
 
 	const APP_NAME = 'phpcb';
+	const GITHUB_LINK = 'http://github.com/smuuf/phpcb/';
+
+	const DEFAULT_ENGINE = '\\Smuuf\\Phpcb\\ChaoticEngine';
 
 	const MAX_COUNT = 1e6;
 	const MIN_COUNT = 1;
@@ -15,6 +18,17 @@ class PhpBenchmark {
 	private $sources = array();
 	private $results = array();
 	private $template = array();
+
+	public function __construct(IEngine $engine = null) {
+
+		if ($engine) {
+			$this->engine = $engine;
+		} else {
+			$default = self::DEFAULT_ENGINE;
+			$this->engine = new $default;
+		}
+
+	}
 
 	public function addBench(\Closure $callable) {
 		$this->closures[] = $callable;
@@ -31,17 +45,7 @@ class PhpBenchmark {
 		// Limit the iterations count
 		$count = min(max($count, self::MIN_COUNT), self::MAX_COUNT);
 
-		// Measure call cost for a void closure
-		$voidTime = self::measureVoidCallTime($count);
-
-		// Run each of the benchmark closures
-		foreach ($this->closures as $key => $function){
-
-			$time = microtime(true);
-			for ($i = $count; $i--;) $function();
-			$this->results[$key] = microtime(true) - $time - $voidTime;
-
-		}
+		$this->results = $this->engine->run($count, $this->closures);
 
 		// Save the total count of iterations for the template
 		$this->template['count'] = $count;
@@ -62,6 +66,9 @@ class PhpBenchmark {
 
 		// Set up template variables
 		$this->template['app_name'] = self::APP_NAME;
+		$this->template['github_link'] = self::GITHUB_LINK;
+		$this->template['css_file'] = self::pathToUrl(__DIR__ . "/../templates/css/main.css");
+		$this->template['engine_used'] = $this->engine->getEngineName();
 		$this->template['results'] = $this->results;
 		$this->template['total_time'] = array_sum($this->results);
 		$this->template['max_time'] = max($this->results);
@@ -73,7 +80,7 @@ class PhpBenchmark {
 
 		// Render the template
 		$tpl = $this->template;
-		require __DIR__ . "/templates/results.php";
+		require __DIR__ . "/../templates/results.php";
 
 		ob_end_flush();
 
@@ -81,20 +88,15 @@ class PhpBenchmark {
 
 	// Helpers
 
-	protected static function measureVoidCallTime($count) {
+	public static function pathToUrl($path, $protocol = 'http://') {
 
-		// Static cache; do this measurement only
-		// once per request for any given $count.
-		static $cache;
-		if ($cache[$count]) return $cache[$count];
+		// Correct the slash type
+		$path = str_replace('\\', '/', $path);
 
-		$voidClosure = function() {};
+		// Remove document root directory from the path
+		$urlPath = str_replace(rtrim($_SERVER['DOCUMENT_ROOT'], '/'), null, $path);
 
-		$time = microtime(true);
-		for ($i = $count; $i--;) $voidClosure();
-		$time = microtime(true) - $time;
-
-		return $cache[$count] = $time;
+		return $protocol . $_SERVER['HTTP_HOST'] . $urlPath;
 
 	}
 

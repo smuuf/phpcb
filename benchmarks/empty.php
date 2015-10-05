@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . "/../app/PhpBenchmark.php";
+require __DIR__ . "/../app/Loader.php";
 
 $bench = new \Smuuf\Phpcb\PhpBenchmark;
 
@@ -15,6 +15,14 @@ $variables[] = 0;
 $bench->addBench(function() use ($variables) {
 
 	foreach ($variables as $v) {
+		!$v;
+	}
+
+});
+
+$bench->addBench(function() use ($variables) {
+
+	foreach ($variables as $v) {
 		empty($v);
 	}
 
@@ -24,14 +32,6 @@ $bench->addBench(function() use ($variables) {
 
 	foreach ($variables as $v) {
 		$v == 0;
-	}
-
-});
-
-$bench->addBench(function() use ($variables) {
-
-	foreach ($variables as $v) {
-		!$v;
 	}
 
 });

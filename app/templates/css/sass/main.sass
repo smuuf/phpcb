@@ -1,0 +1,31 @@
+/* Import variables */
+@import 'variables'
+
+/* Basics */
+@import 'reset'
+@import 'layout'
+@import 'basics'
+
+body
+	background: $color-background
+	margin: 0
+	padding: 0
+	font-family: $base-font-family
+	font-size: 12pt
+	color: $color-text-normal
+
+#content
+	& > .width-container
+		margin: auto
+		max-width: 960px
+		height: 100%
+		width: 100%
+
+.status
+	&.lite
+		display: inline-block
+		vertical-align: middle
+		border-radius: 3px
+		width: 10px
+		height: 10px
+		background: #333

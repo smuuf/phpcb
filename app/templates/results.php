@@ -1,108 +1,21 @@
 <!doctype html>
 <html>
 	<head>
-		<title>
-			<?= $tpl['app_name']; ?>
-		</title>
-		<style>
-
-			body {
-				font-family: Helvetica, Arial, sans-serif;
-				font-size: 10pt;
-			}
-
-			h1 {
-				display: inline-block;
-				font-size: 18pt;
-				padding: 10px;
-				margin: 0;
-				color: #fff;
-				background: #888;
-			}
-
-			h2 {
-				display: inline-block;
-				font-size: 18pt;
-				margin: 10px 0;
-				color: #000;
-			}
-
-			h3 {
-				display: inline-block;
-				margin: 0;
-				font-size: 16pt;
-				font-family: Arial;
-				padding: 0 5px 5px 5px;
-				color: #fff;
-				background: #333;
-			}
-
-			p {
-				margin: 10px 0;
-				padding: 0;
-			}
-
-			.results{
-				list-style: none;
-				margin: 0; padding: 0;
-			}
-
-			.results li{
-				margin: 10px 0 10px 0;
-				border-top: 5px solid #333;
-			}
-
-			.results li:nth-child(even){
-				background: rgba(0,0,0,0.05);
-			}
-
-			pre.code {
-				font-size: 10pt;
-				background: #ddd;
-				padding: 10px;
-				margin: 0;
-				font-family: Consolas, Courier, monospace;
-			}
-
-			.result-time {
-				font-size: 10pt;
-				font-weight: bold;
-				color: #FF1F47;
-				margin-bottom: 10px;
-			}
-
-			.result-time-single {
-				font-size: pt;
-				color: #888;
-			}
-
-			.result-colorbox{
-				padding: 10px 10px 10px 5px;
-				border-bottom: 5px solid rgba(0,0,0,0.25);
-			}
-
-			.result-colorbox span.score {
-				background: rgba(255,255,255,0.75);
-				padding: 5px;
-				height: 100%;
-			}
-
-			.result-colorbox span.score2 {
-				padding: 5px;
-				height: 100%;
-				color: #fff;
-				opacity: 0.75;
-				background: rgba(0,0,0,0.25);
-				text-shadow: 0px 1px 0px #000;
-			}
-
-		</style>
+		<title><?= $tpl['app_name']; ?></title>
+		<link rel="stylesheet" type="text/css" href="<?=$tpl['css_file'];?>" media="all">
 	</head>
 	<body>
-		<h1><?= $tpl['app_name']; ?> results</h1>
-		<h2>PHP <?= phpversion(); ?></h2>
+		<header id="main-header">
+			<h1><?= $tpl['app_name']; ?></h1>
+			<span class="separator">\\\</span>
+			<h2>PHP <?= phpversion(); ?></h2>
+		</header>
 
-		<p>Iterations: <?= $tpl['count']; ?>x \ Total time: <?= number_format($tpl['total_time'], 4); ?> ms</p>
+		<section id="sub-header">
+			<span class="item">Engine used: <span class="value"><?= $tpl['engine_used']; ?></span> </span> <span class="separator">\\\</span>
+			<span class="item">Total time: <span class="value"><?= number_format($tpl['total_time'], 4); ?></span> ms</span> <span class="separator">\\\</span>
+			<span class="item">Iterations: <span class="value"><?= $tpl['count']; ?></span> x </span>
+		</section>
 
 		<ul class="results">
 
@@ -111,12 +24,6 @@
 			foreach($tpl['results'] as $index => $resultTime):
 		?>
 			<li class="single-result">
-
-				<h3><?= ++$position; ?>.</h3>
-
-				Result:
-				<span class='result-time'><?= number_format($resultTime, 4); ?> ms</span> \
-				<span class='result-time-single'><?= bcdiv($resultTime, $tpl['count']); ?> ms</span> per single iteration
 
 				<?php
 
@@ -128,7 +35,7 @@
 					// .. (ie. there's only one test or there are no differences)
 					if ($tpl['total_time'] && $tpl['min_time'] - $tpl['max_time']) {
 
-						$score = $tpl['min_time'] / $tpl['results'][$index] * 100;
+						$score = $tpl['min_time'] / $resultTime * 100;
 						$score2 = $resultTime / $tpl['min_time'];
 
 					} else {
@@ -140,19 +47,43 @@
 
 				?>
 
-				<p><b>Closure <?= $index + 1 ?></b> \ Code:</p>
-				<pre class="code"><?= htmlentities($tpl['source_function']($closure), ENT_HTML5); ?></pre>
+				<header>
+					<div class="score" style="color: <?= $score !== false ? $tpl['gradient_function']($score) : '#333'; ?>">
+						<?= $score !== false ? floor($score) : 'N/A'; ?><!--
+					--><span class='fraction' style="color: <?= $score !== false ? $tpl['gradient_function']($score, 100) : '#888'; ?>"><!--
+						--><?= $score !== false ? '.' . sprintf('%02d', ($score - floor($score)) * 100) : null; ?>
+						</span>
+					</div>
+					<div class="info">
+						<div class="group">
+							<?php if ($score2 != 1): ?>
+							<span class='value'>
+									<?= $score2 !== false ? number_format($score2, 2) : 'N/A'; ?> &times;
+							</span>
+							<span class='label'>slower</span>
+							<?php endif; ?>
+						</div>
+						<div class="group">
+							<span class='value'><?= number_format($resultTime, 4); ?> ms</span>
+							<span class='label'>cost</span>
+						</div>
+						<div class="group">
+							<span class='value'><?= bcdiv($resultTime, $tpl['count']); ?> ms</span>
+							<span class='label'>single iteration</span>
+						</div>
+					</div>
+					<div class="position">
+						<small>Closure</small> <?= $index + 1; ?>
+					</div>
+				</header>
 
-				<div class='result-colorbox' style='background-color: <?= $score !== false ? $tpl['gradient_function']($score) : '#888'; ?>'>
-					<span class="score">Score: <b><?= $score !== false ? number_format($score, 2) : 'N/A'; ?> %</b></span>
-					<?php if ($score2 != 1): ?>
-						<span class="score2"><?= $score2 !== false ? number_format($score2, 2) : 'N/A'; ?> &times; slower</span>
-					<?php endif; ?>
-				</div>
+				<pre class="code"><?= htmlentities($tpl['source_function']($closure)); ?></pre>
 
 			</li>
 		<?php endforeach; ?>
 		</ul>
+
+		<div class="github-link"><a href='<?=$tpl['github_link']?>' target='_blank'>Check out <b>phpcb</b> on GitHub</a></div>
 
 	</body>
 </html>
