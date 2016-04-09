@@ -7,7 +7,7 @@ class PhpBenchmark {
 	const APP_NAME = 'phpcb';
 	const GITHUB_LINK = 'http://github.com/smuuf/phpcb/';
 
-	const DEFAULT_ENGINE = '\\Smuuf\\Phpcb\\ChaoticEngine';
+	const DEFAULT_ENGINE = '\Smuuf\Phpcb\ChaoticEngine';
 
 	const MAX_COUNT = 1e6;
 	const MIN_COUNT = 1;
