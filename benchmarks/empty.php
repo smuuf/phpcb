@@ -1,7 +1,6 @@
 <?php
 
 require __DIR__ . "/../app/Loader.php";
-
 $bench = new \Smuuf\Phpcb\PhpBenchmark;
 
 // Set up everything we need.
@@ -37,4 +36,4 @@ $bench->addBench(function() use ($variables) {
 });
 
 // Run the benchmark (with default number of iterations)
-$bench->run();
+$bench->run(100000);
