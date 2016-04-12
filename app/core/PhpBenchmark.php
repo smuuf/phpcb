@@ -18,6 +18,7 @@ class PhpBenchmark {
 	private $sources = array();
 	private $results = array();
 	private $template = array();
+	private $templateType;
 
 	public function __construct(IEngine $engine = null) {
 
@@ -27,6 +28,8 @@ class PhpBenchmark {
 			$default = self::DEFAULT_ENGINE;
 			$this->engine = new $default;
 		}
+
+		$this->templateType = php_sapi_name() != "cli" ? 'html' : 'cli';
 
 	}
 
@@ -80,7 +83,7 @@ class PhpBenchmark {
 
 		// Render the template
 		$tpl = $this->template;
-		require __DIR__ . "/../templates/results.php";
+		require __DIR__ . sprintf("/../templates/%s.php", $this->templateType);
 
 		ob_end_flush();
 
