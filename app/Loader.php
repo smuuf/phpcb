@@ -2,6 +2,6 @@
 
 use \Smuuf\Phpcb\Autoloader;
 
-require __DIR__ . './core/Autoload.php';
+require __DIR__ . '/core/Autoload.php';
 
 Autoloader::register();
