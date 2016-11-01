@@ -9,7 +9,7 @@ class PhpBenchmark {
 
 	const DEFAULT_ENGINE = '\Smuuf\Phpcb\ChaoticEngine';
 
-	const MAX_COUNT = 1e6;
+	const MAX_COUNT = PHP_INT_MAX;
 	const MIN_COUNT = 1;
 
 	const BC_SCALE = 10;
@@ -37,7 +37,7 @@ class PhpBenchmark {
 		$this->closures[] = $callable;
 	}
 
-	public function run($count = 10000){
+	public function run($count = 10000) {
 
 		// Make sure the output of benchmarked code is not displayed.
 		ob_start();
@@ -58,7 +58,7 @@ class PhpBenchmark {
 
 	}
 
-	private function renderResults(){
+	private function renderResults() {
 
 		ob_start();
 
@@ -92,6 +92,8 @@ class PhpBenchmark {
 	// Helpers
 
 	public static function pathToUrl($path, $protocol = 'http://') {
+
+		if (!isset($_SERVER['HTTP_HOST'])) return $path;
 
 		// Correct the slash type
 		$path = str_replace('\\', '/', $path);
