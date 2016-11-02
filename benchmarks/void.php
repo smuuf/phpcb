@@ -24,4 +24,4 @@ $bench->addBench(function() {
 // Add more benchmarks...
 
 // Run the benchmark (with default number of iterations)
-$bench->run(500000);
+$bench->run();

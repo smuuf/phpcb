@@ -10,15 +10,6 @@ $variables[] = '';
 $variables[] = '0';
 $variables[] = 0;
 
-// Add benchmarks.
-$bench->addBench(function() use ($variables) {
-
-	foreach ($variables as $v) {
-		!$v;
-	}
-
-});
-
 $bench->addBench(function() use ($variables) {
 
 	foreach ($variables as $v) {
@@ -35,5 +26,13 @@ $bench->addBench(function() use ($variables) {
 
 });
 
+$bench->addBench(function() use ($variables) {
+
+	foreach ($variables as $v) {
+		!$v;
+	}
+
+});
+
 // Run the benchmark (with default number of iterations)
-$bench->run(100000);
+$bench->run();
