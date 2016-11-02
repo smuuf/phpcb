@@ -4,6 +4,8 @@ namespace Smuuf\Phpcb;
 
 class ChaoticEngine implements IEngine {
 
+	const BATCH_SIZE = 1000;
+
 	public function getEngineName() {
 		return 'Chaotic Engine';
 	}
@@ -24,17 +26,24 @@ class ChaoticEngine implements IEngine {
 		}
 
 		$i = 0;
-		while ($i++ - $totalCount) {
+		while ($i <= $totalCount) {
 
 			$whichKey = array_rand($remainingClosures);
 
+			$y = min(self::BATCH_SIZE, $count);
+
 			$time = microtime(true);
-			$closures[$whichKey]();
+			while ($y--) {
+-				$closures[$whichKey]();
+			}
+
 			$results[$whichKey] += microtime(true) - $time;
 
 			if (++$closureCount[$whichKey] == $count) {
 				unset($remainingClosures[$whichKey]);
 			}
+
+			$i += self::BATCH_SIZE;
 
 		}
 
