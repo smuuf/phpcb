@@ -37,7 +37,7 @@ class PhpBenchmark {
 		$this->closures[] = $callable;
 	}
 
-	public function run($count = 10000) {
+	public function run($count = 1000000) {
 
 		// Make sure the output of benchmarked code is not displayed.
 		ob_start();
