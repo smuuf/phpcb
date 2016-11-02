@@ -1,24 +1,18 @@
-----------
 
-<?= $tpl['app_name']; ?>, PHP <?= phpversion(); ?>
+█ <?= $tpl['app_name']; ?>, PHP <?= phpversion(); echo PHP_EOL; ?>
 
-
-----------
-
-Engine used: <?= $tpl['engine_used']; ?>, Total time: <?= number_format($tpl['total_time'], 4); ?> ms, Iterations: <?= $tpl['count']; ?>
+Engine used: <?= $tpl['engine_used']; ?>, Total time: <?= number_format($tpl['total_time'], 4); ?> ms, Iterations: <?= number_format($tpl['count'], 0, '.', ' '); ?>
 
 
 <?php
+
 	$position = 0;
 	foreach($tpl['results'] as $index => $resultTime) {
 
 		$closure = $tpl['closures'][$index];
 
-		// Avoid division by zero in certain cases:
-		// 1) Total time is below measurable threshold
-		// 2) Minimal and maximal of the benchmard time are the same
-		// .. (ie. there's only one test or there are no differences)
-		if ($tpl['total_time'] && $tpl['min_time'] - $tpl['max_time']) {
+		// Avoid division by zero in certain cases.
+		if ($tpl['total_time'] && $resultTime && $tpl['min_time'] && $tpl['min_time'] - $tpl['max_time']) {
 
 			$score = $tpl['min_time'] / $resultTime * 100;
 			$score2 = $resultTime / $tpl['min_time'];

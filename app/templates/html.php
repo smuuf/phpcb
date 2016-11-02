@@ -14,7 +14,7 @@
 		<section id="sub-header">
 			<span class="item">Engine used: <span class="value"><?= $tpl['engine_used']; ?></span> </span> <span class="separator">\\\</span>
 			<span class="item">Total time: <span class="value"><?= number_format($tpl['total_time'], 4); ?></span> ms</span> <span class="separator">\\\</span>
-			<span class="item">Iterations: <span class="value"><?= $tpl['count']; ?></span> x </span>
+			<span class="item">Iterations: <span class="value"><?= number_format($tpl['count'], 0, '.', ' '); ?></span> x </span>
 		</section>
 
 		<ul class="results">
@@ -29,11 +29,8 @@
 
 					$closure = $tpl['closures'][$index];
 
-					// Avoid division by zero in certain cases:
-					// 1) Total time is below measurable threshold
-					// 2) Minimal and maximal of the benchmard time are the same
-					// .. (ie. there's only one test or there are no differences)
-					if ($tpl['total_time'] && $tpl['min_time'] - $tpl['max_time']) {
+					// Avoid division by zero in certain cases.
+					if ($tpl['total_time'] && $resultTime && $tpl['min_time'] && $tpl['min_time'] - $tpl['max_time']) {
 
 						$score = $tpl['min_time'] / $resultTime * 100;
 						$score2 = $resultTime / $tpl['min_time'];
