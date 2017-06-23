@@ -1,0 +1,13 @@
+{
+	"name": "smuuf/phpcb",
+	"description": "PHP Code Benchmark",
+	"authors": [
+		{
+			"name": "Premysl Karbula",
+			"email": "premavansmuuf@gmail.com"
+		}
+	],
+	"autoload":{
+		 "files": ["app/loader.php"]
+	}
+}
