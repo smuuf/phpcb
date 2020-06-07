@@ -10,7 +10,7 @@ class SerialEngine implements IEngine {
 
 	public function run($count, array $closures) {
 
-		$results = array();
+		$results = [];
 
 		// Measure call cost for a void closure
 		$voidTime = self::measureVoidCallTime($count);

@@ -26,6 +26,7 @@ class Autoloader {
 		'PhpBenchmark' => '/PhpBenchmark',
 		'*Engine' => '/engines/*',
 		'I*' => '/interfaces/*',
+		'*Exception' => '/exceptions/*',
 	];
 
 	/** @var bool Was this autoloader already registered? **/

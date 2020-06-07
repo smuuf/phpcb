@@ -14,10 +14,9 @@ class PhpBenchmark {
 
 	const BC_SCALE = 10;
 
-	private $closures = array();
-	private $sources = array();
-	private $results = array();
-	private $template = array();
+	private $closures = [];
+	private $results = [];
+	private $template = [];
 	private $templateType;
 
 	public function __construct(IEngine $engine = null) {
@@ -37,7 +36,7 @@ class PhpBenchmark {
 		$this->closures[] = $callable;
 	}
 
-	public function run($count = 1000000) {
+	public function run(int $count = 1000000) {
 
 		// Make sure the output of benchmarked code is not displayed.
 		ob_start();
@@ -48,7 +47,12 @@ class PhpBenchmark {
 		// Limit the iterations count
 		$count = min(max($count, self::MIN_COUNT), self::MAX_COUNT);
 
-		$this->results = $this->engine->run($count, $this->closures);
+		try {
+			$this->results = $this->engine->run($count, $this->closures);
+		} catch (DifferentResultException $e) {
+			echo $e->getMessage();
+			die;
+		}
 
 		// Save the total count of iterations for the template
 		$this->template['count'] = $count;
@@ -124,7 +128,11 @@ class PhpBenchmark {
 
 	}
 
-	private function getGradientColor($percentage, $brightness = 200, $b = '00') {
+	private function getGradientColor(
+		float $percentage,
+		int $brightness = 200,
+		$b = '00'
+	) {
 
 		$green = $brightness * $percentage / 100 ;
 		$red = $brightness * (1 - ($percentage / 100));

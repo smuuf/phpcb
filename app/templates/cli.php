@@ -1,7 +1,7 @@
 
 █ <?= $tpl['app_name']; ?>, PHP <?= phpversion(); echo PHP_EOL; ?>
 
-Engine used: <?= $tpl['engine_used']; ?>, Total time: <?= number_format($tpl['total_time'], 4); ?> ms, Iterations: <?= number_format($tpl['count'], 0, '.', ' '); ?>
+Engine used: <?= $tpl['engine_used']; ?>, Total time: <?= number_format($tpl['total_time'], 4); ?> sec, Iterations: <?= number_format($tpl['count'], 0, '.', ' '); ?>
 
 
 <?php
@@ -27,12 +27,13 @@ Engine used: <?= $tpl['engine_used']; ?>, Total time: <?= number_format($tpl['to
 	echo sprintf('%s. Score: %s%s', $index + 1, $score !== false ? floor($score) : 'N/A', $score !== false ? '.' . sprintf('%02d', ($score - floor($score)) * 100) : null) ;
 	echo ', ';
 
+	echo number_format($resultTime, 4) . ' sec';
+
 	if ($score2 != 1) {
-		echo $score2 !== false ? number_format($score2, 2) . 'x slower' : 'N/A';
 		echo ', ';
+		echo $score2 !== false ? number_format($score2, 2) . 'x slower' : 'N/A';
 	}
 
-	echo number_format($resultTime, 4) . ' ms';
 	echo PHP_EOL;
 	echo $tpl['source_function']($closure);
 	echo PHP_EOL;
