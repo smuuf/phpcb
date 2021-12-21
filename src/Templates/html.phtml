@@ -3,6 +3,9 @@
 	<head>
 		<title><?= $tpl['app_name']; ?></title>
 		<link rel="stylesheet" type="text/css" href="<?=$tpl['css_file'];?>" media="all">
+		<style>
+			<?= file_get_contents($tpl['css_file']); ?>
+		</style>
 	</head>
 	<body>
 		<header id="main-header">

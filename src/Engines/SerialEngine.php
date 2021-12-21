@@ -1,14 +1,14 @@
 <?php
 
-namespace Smuuf\Phpcb;
+namespace Smuuf\Phpcb\Engines;
 
 class SerialEngine implements IEngine {
 
-	public function getEngineName() {
+	public function getEngineName(): string {
 		return 'Serial Engine';
 	}
 
-	public function run($count, array $closures) {
+	public function run(int $count, array $closures): array {
 
 		$results = [];
 

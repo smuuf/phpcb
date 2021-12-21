@@ -1,6 +1,6 @@
 <?php
 
-namespace Smuuf\Phpcb;
+namespace Smuuf\Phpcb\Ex;
 
 class DifferentResultException extends \RuntimeException {
 

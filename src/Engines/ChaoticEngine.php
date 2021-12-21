@@ -1,14 +1,16 @@
 <?php
 
-namespace Smuuf\Phpcb;
+namespace Smuuf\Phpcb\Engines;
+
+use \Smuuf\Phpcb\Ex\DifferentResultException;
 
 class ChaoticEngine implements IEngine {
 
-	public function getEngineName() {
+	public function getEngineName(): string {
 		return 'Chaotic Engine';
 	}
 
-	public function run($count, array $closures) {
+	public function run(int $count, array $closures): array {
 
 		// Build the "plan" array containing all indexes of closures we're
 		// going to be measuring.

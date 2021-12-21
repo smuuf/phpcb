@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . "/../app/Loader.php";
+require __DIR__ . '/../vendor/autoload.php';
 $bench = new \Smuuf\Phpcb\PhpBenchmark;
 
 define("FILENAME", "c:\some\very\hyper complex\file_path\image.png");
@@ -10,7 +10,8 @@ $bench->addBench(function() {
 });
 
 $bench->addBench(function() {
-	$ext = end(explode('.', FILENAME));
+	$exploded = explode('.', FILENAME);
+	$ext = end($exploded);
 });
 
 $bench->addBench(function() {

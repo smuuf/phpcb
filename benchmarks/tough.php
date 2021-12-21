@@ -1,7 +1,6 @@
 <?php
 
-require __DIR__ . "/../app/Loader.php";
-
+require __DIR__ . '/../vendor/autoload.php';
 $bench = new \Smuuf\Phpcb\PhpBenchmark;
 
 $bench->addBench(function() {

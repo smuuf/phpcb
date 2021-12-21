@@ -4,10 +4,20 @@
 	"authors": [
 		{
 			"name": "Premysl Karbula",
-			"email": "premavansmuuf@gmail.com"
+			"email": "premavansmuuf+github@gmail.com"
 		}
 	],
 	"autoload":{
-		 "files": ["app/loader.php"]
+		"psr-4": {
+			"Smuuf\\Phpcb\\": "src/"
+		}
+	},
+	"require": {
+		"php": ">=7.4",
+		"ext-bcmath" : "*"
+	},
+	"require-dev": {
+		"nette/tester": "^2.4",
+		"phpstan/phpstan": "^1.2"
 	}
 }

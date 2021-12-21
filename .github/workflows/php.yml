@@ -1,0 +1,27 @@
+name: PHP tests
+
+on: [push]
+
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+    strategy:
+          matrix:
+            php-versions: ['7.4', '8.0', '8.1', 'latest']
+          fail-fast: false
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: bcmath
+        coverage: none
+    - name: Install dependencies
+      run: |
+        composer install --optimize-autoloader
+    - name: Run tests
+      run: chmod +x ./bin/* && ./bin/tests.sh
+    - name: Run static analysis
+      continue-on-error: true
+      run: chmod +x ./bin/* && ./bin/phpstan.sh

@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+	<head>
+		<title>PHP Code Benchmark (phpcb)</title>
+		<link rel="stylesheet" type="text/css" href="/mnt/d/produkce/php/phpcb/src/../templates/css/main.css" media="all">
+	</head>
+	<body>
+		<header id="main-header">
+			<h1>PHP Code Benchmark (phpcb)</h1>
+			<span class="separator">\\\</span>
+			<h2>PHP 7.4.27</h2>
+		</header>
+
+		<section id="sub-header">
+			<span class="item">Engine used: <span class="value">Chaotic Engine</span> </span> <span class="separator">\\\</span>
+			<span class="item">Total time: <span class="value">0.0321</span> ms</span> <span class="separator">\\\</span>
+			<span class="item">Iterations: <span class="value">10</span> x </span>
+		</section>
+
+		<ul class="results">
+
+					<li class="single-result">
+
+				
+				<header>
+					<div class="score" style="color: #bec700">
+						52<!--
+					--><span class='fraction' style="color: #5e6300"><!--
+						-->.22						</span>
+					</div>
+					<div class="info">
+						<div class="group">
+														<span class='value'>
+									1.91 &times;
+							</span>
+							<span class='label'>slower</span>
+													</div>
+						<div class="group">
+							<span class='value'>0.0211 ms</span>
+							<span class='label'>cost</span>
+						</div>
+						<div class="group">
+							<span class='value'>0.0021073818 ms</span>
+							<span class='label'>single iteration</span>
+						</div>
+					</div>
+					<div class="position">
+						<small>Closure</small> 2					</div>
+				</header>
+
+				<pre class="code">
+ob_start();
+$phpcb-&gt;run(10);
+$output = ob_get_flush();
+Assert::match('#&lt;span class=&quot;item&quot;.*Engine used#', $output);
+Assert::match('#&lt;span class=&quot;item&quot;.*Total time#', $output);
+Assert::match('#&lt;span class=&quot;item&quot;.*Iterations#', $output);</pre>
+
+			</li>
+					<li class="single-result">
+
+				
+				<header>
+					<div class="score" style="color: #00c800">
+						100<!--
+					--><span class='fraction' style="color: #006400"><!--
+						-->.00						</span>
+					</div>
+					<div class="info">
+						<div class="group">
+													</div>
+						<div class="group">
+							<span class='value'>0.0110 ms</span>
+							<span class='label'>cost</span>
+						</div>
+						<div class="group">
+							<span class='value'>0.0011004924 ms</span>
+							<span class='label'>single iteration</span>
+						</div>
+					</div>
+					<div class="position">
+						<small>Closure</small> 1					</div>
+				</header>
+
+				<pre class="code">$phpcb-&gt;addBench(fn() =&gt; usleep(2000));
+
+ob_start();
+$phpcb-&gt;run(10);
+$output = ob_get_flush();
+Assert::match('#&lt;span class=&quot;item&quot;.*Engine used#', $output);
+Assert::match('#&lt;span class=&quot;item&quot;.*Total time#', $output);
+Assert::match('#&lt;span class=&quot;item&quot;.*Iterations#', $output);</pre>
+
+			</li>
+				</ul>
+
+		<div class="github-link"><a href='http://github.com/smuuf/phpcb/' target='_blank'>Check out <b>phpcb</b> on GitHub</a></div>
+
+	</body>
+</html>
